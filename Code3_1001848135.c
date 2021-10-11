@@ -78,7 +78,7 @@ void Rand_num_fillbingo(int bing_arr[][5])
                         {
                             bing_value = rand() % (75-61+1)+61;
                         } 
-                        go to LABEL1;
+                        goto LABEL1;
                     }
                 }
             }
@@ -126,7 +126,25 @@ void Bingo_card(int bing_arr[][5])
 
 int number_caller()
 {
+    int i=0, k=0;
+    int call_num_arr[75]={};
+    int call_value=0
     
+    for(i=0;i<75;i++)
+    {
+        call_value = rand() % (75-1+1)+1;
+        for(j=0;j<75;j++)
+        {
+            LABEL2: if (cal_num_arr[j]==call_value)
+            {
+                call_value = rand() % (75-1+1)+1;
+                goto LABEL2;
+            }
+        }
+        cal_num_arr[i]=call_vlaue;
+    }
+    
+
 }
 
 
