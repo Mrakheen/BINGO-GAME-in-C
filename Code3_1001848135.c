@@ -26,86 +26,92 @@ int main(void)
     bing_arr[0][4]= 79; /*ASCII Value for 'O'*/
 
     Rand_num_fillbingo(bing_arr);
+    Bingo_card(bing_arr);
+    printf("\n");
 
     for (i=0;;i++)
     {
-        Bingo_card(bing_arr);
-
         int call_value=number_caller();
         char ans;
 
         if(call_value>=1 && call_value<=15)
         {
-            printf("The next number is %c%d\n",bing_arr[0][0],call_value);
+            printf("The next number is %c%d\n\n",bing_arr[0][0],call_value);
         }
         else if(call_value>=16 && call_value<=30)
         {
-            printf("The next number is %c%d\n",bing_arr[0][1],call_value);
+            printf("The next number is %c%d\n\n",bing_arr[0][1],call_value);
         }
-        if(call_value>=31 && call_value<=45)
+        else if(call_value>=31 && call_value<=45)
         {
-            printf("The next number is %c%d\n",bing_arr[0][2],call_value);
+            printf("The next number is %c%d\n\n",bing_arr[0][2],call_value);
         }
-        if(call_value>=46 && call_value<=60)
+        else if(call_value>=46 && call_value<=60)
         {
-            printf("The next number is %c%d\n",bing_arr[0][3],call_value);
+            printf("The next number is %c%d\n\n",bing_arr[0][3],call_value);
         }
-        if(call_value>=61 && call_value<=75)
+        else if(call_value>=61 && call_value<=75)
         {
-            printf("The next number is %c%d\n",bing_arr[0][4],call_value);
+            printf("The next number is %c%d\n\n",bing_arr[0][4],call_value);
         }
 
-        printf("Do you have it?(Y/N)");
-        scanf(" %c",&ans);
-
+        printf("Do you have it?(Y/N) ");
+        /*scanf(" %c",&ans);*/
+        ans='Y';
+        printf("\n");
         if(ans=='Y')
         {
             int val=num_Bingocard_checker(bing_arr,call_value);
             if(val==1)
             {
                 Bingo_card(bing_arr);
+                printf("\n");
             }
             else if(val==0)
             {
-                printf("That value is not on your BINGO card - are you trying to cheat??\n");
+                printf("That value is not on your BINGO card - are you trying to cheat??\n\n");
                 Bingo_card(bing_arr);
+                printf("\n");
             }
         }
         else if(ans=='N')
         {
             Bingo_card(bing_arr);
+            printf("\n");
         }
-        else 
+        else if(ans!='Y' && ans!='N')
         {
             Bingo_card(bing_arr);
+            printf("\n");
         }
-       int val2=row_check(bing_arr);
-       int val3=column_check(bing_arr);
-       if(val2==1 && val3==0)
-       {
-           printf("You filled out a row - BINGO!!!\n");
-           exit(0);
-       }
-       else if(val2==0 && val3==1)
-       {
-           printf("You filled out a column - BINGO!!!\n");
-           exit(0);
-       }
-       else if(val2==1 && val3==1)
-       {
-           printf("You filled out a row and a column - BINGO!!!\n");
-           exit(0);
-       }
-
+        int val2=row_check(bing_arr);
+        int val3=column_check(bing_arr);
+        if(val2==1 && val3==0)
+        {
+            printf("You filled out a row - BINGO!!!\n\n");
+            exit(0);
+        }
+        else if(val2==0 && val3==1)
+        {
+            printf("You filled out a column - BINGO!!!\n\n");
+            exit(0);
+        }
+        else if(val2==1 && val3==1)
+        {
+            printf("You filled out a row and a column - BINGO!!!\n\n");
+            exit(0);
+        }
     }
+    return 0;
 }
+
 
 void Rand_num_fillbingo(int bing_arr[][6])
 {
     int i=0, j=0, k=0, l=0, bing_value=0;
     srand(time(0));
 
-    for(i=0;i<5;i++)
+    Label3: for(i=0;i<5;i++)
     {
         for(j=0;j<5;j++)
         {
@@ -134,7 +140,7 @@ void Rand_num_fillbingo(int bing_arr[][6])
             {
                 for(l=0;l<5;l++)
                 {
-                    LABEL1: if(bing_arr [k+1][l] == bing_value)
+                    LABEL1: if(bing_arr [l+1][k] == bing_value)
                     {
                         if(bing_arr[0][i]== 66)
                         {
@@ -160,10 +166,29 @@ void Rand_num_fillbingo(int bing_arr[][6])
                     }
                 }
             }
-            bing_arr[i+1][j] = bing_value;
+            bing_arr[j+1][i] = bing_value;
         }
     }
-    bing_arr[2][2]=0; /*free space on bingo card*/
+
+    /*for(i=0;i<5;i++)  /*This rechecks the bingo array for any same values and if found send back to previous
+                        loop to renew all values.*/
+    /*{
+        for(j=0;j<5;j++)
+        {
+            for(k=0;k<5;k++)
+            {
+                for(l=0;l<5;l++)
+                {
+                    if(bing_arr[j+1][i]== bing_arr[l+1][k] && j+1!=l+1 && i!=k)
+                    {
+                        goto Label3;
+                    }
+                }
+            }
+        }
+    }*/
+
+    bing_arr[3][2]=0; /*free space on bingo card*/
 }
 
 void Bingo_card(int bing_arr[][6])
@@ -175,7 +200,7 @@ void Bingo_card(int bing_arr[][6])
     {
         if(i==0)
         {
-            printf("%4c",bing_arr[0][i]);
+            printf("%5c",bing_arr[0][i]);
         }
         else
         {
@@ -183,7 +208,7 @@ void Bingo_card(int bing_arr[][6])
         }
     }
     printf("\n");
-    printf("---------------------------------------------\n");
+    printf("-----------------------------------------\n");
     for(i=1;i<=5;i++)
     {
         for(k=0;k<5;k++)
@@ -193,14 +218,26 @@ void Bingo_card(int bing_arr[][6])
                 bing_arr[i][k]=88; /*ASCII value of X*/
                 printf("%c%4c%4c",div,bing_arr[i][k],div);
             }
-            else if(k==0)
+            else if(k==0 && bing_arr[i][k]==88)
+            {
+                printf("%c%4c%4c",div,bing_arr[i][k],div);
+            }
+            else if(k==0 && bing_arr[i][k]!=0)
+            {
+                printf("%c%4d%4c",div,bing_arr[i][k],div);
+            }
+            else if(k==0 && bing_arr[i][k]!=88)
             {
                 printf("%c%4d%4c",div,bing_arr[i][k],div);
             }
             else if(k!=0 && bing_arr[i][k]==0)
             {
-               bing_arr[i][k]=88; /*ASCII value of X*/
-               printf("%4c%4c",bing_arr[i][k],div);
+                bing_arr[i][k]=88; /*ASCII value of X*/
+                printf("%4c%4c",bing_arr[i][k],div);
+            }
+            else if(k!=0 && bing_arr[i][k]==88)
+            {
+                printf("%4c%4c",bing_arr[i][k],div);
             }
             else
             {
@@ -208,7 +245,7 @@ void Bingo_card(int bing_arr[][6])
             }
         }
         printf("\n");
-        printf("---------------------------------------------\n");
+        printf("-----------------------------------------\n");
     }
 }
 
@@ -229,8 +266,13 @@ int number_caller()
             goto LABEL2;
         }
     }
+    if(i==75)
+    {
+        printf("All numbers between 1 and 75 have been called.\n");
+        exit(0);
+    }
     call_num_arr[i]=call_value;
-    i++;
+    i++; /*counts the number of values called & used as call_num_arr array index.*/
     return call_value;
 }
 
@@ -259,6 +301,7 @@ int num_Bingocard_checker(int bing_arr[][6],int random_num)
     }
 }
 
+
 int row_check(int bing_arr[][6])
 {
     int i=0, j=0, count=0;
@@ -266,14 +309,17 @@ int row_check(int bing_arr[][6])
     {
         for(j=0;j<5;j++)
         {
-            if(bing_arr[i][j]==0)
+            if(bing_arr[i][j]==0 || bing_arr[i][j]==88)
             {
                 count++;
             }
         }
+        if(count==5)
+        {
+            break;
+        }
         count=0; /*this resets the counter back to zero before checking a new row.*/
     }
-
     if(count==5)
     {
         return 1;
@@ -284,21 +330,25 @@ int row_check(int bing_arr[][6])
     }
 }
 
- int column_check(int bing_arr[][6])
+
+int column_check(int bing_arr[][6])
 {
     int i=0, j=0, count=0;
     for(i=0;i<5;i++)
     {
         for(j=1;j<=5;j++)
         {
-            if(bing_arr[j][i]==0)
+            if(bing_arr[j][i]==0 || bing_arr[j][i]==88)
             {
                 count++;
             }
         }
+        if(count==5)
+        {
+            break;
+        }
         count=0; /*this resets the counter back to zero before checking a new column.*/
     }
-
     if(count==5)
     {
         return 1;
