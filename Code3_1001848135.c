@@ -56,8 +56,7 @@ int main(void)
         }
 
         printf("Do you have it?(Y/N) ");
-        /*scanf(" %c",&ans);*/
-        ans='Y';
+        scanf(" %c",&ans);
         printf("\n");
         if(ans=='Y')
         {
@@ -105,13 +104,12 @@ int main(void)
     return 0;
 }
 
-
 void Rand_num_fillbingo(int bing_arr[][6])
 {
-    int i=0, j=0, k=0, l=0, bing_value=0;
+    int i=0, j=0, k=0, l=0, m=0, bing_value=0;
     srand(time(0));
 
-    Label3: for(i=0;i<5;i++)
+    for(i=0;i<5;i++)
     {
         for(j=0;j<5;j++)
         {
@@ -136,58 +134,44 @@ void Rand_num_fillbingo(int bing_arr[][6])
                 bing_value = rand() % (75-61+1)+61;
             }
 
-            for(k=0;k<5;k++)
+            do
             {
-                for(l=0;l<5;l++)
+                m=0;
+                if(bing_arr[0][i]== 66)
                 {
-                    LABEL1: if(bing_arr [l+1][k] == bing_value)
+                    bing_value = rand() % (15-1+1)+1;
+                }
+                else if(bing_arr[0][i]== 73)
+                {
+                    bing_value = rand() % (30-16+1)+16;
+                }
+                else if(bing_arr[0][i]== 78)
+                {
+                    bing_value = rand() % (45-31+1)+31;
+                }
+                else if(bing_arr[0][i]== 71)
+                {
+                    bing_value = rand() % (60-46+1)+46;
+                }
+                else if(bing_arr[0][i]== 79)
+                {
+                    bing_value = rand() % (75-61+1)+61;
+                }
+                for(k=0;k<5;k++)
+                {
+                    for(l=0;l<5;l++)
                     {
-                        if(bing_arr[0][i]== 66)
+                        if(bing_arr [l+1][k] == bing_value)
                         {
-                            bing_value = rand() % (15-1+1)+1;
+                            m++;
                         }
-                        else if(bing_arr[0][i]== 73)
-                        {
-                            bing_value = rand() % (30-16+1)+16;
-                        }
-                        else if(bing_arr[0][i]== 78)
-                        {
-                            bing_value = rand() % (45-31+1)+31;
-                        }
-                        else if(bing_arr[0][i]== 71)
-                        {
-                            bing_value = rand() % (60-46+1)+46;
-                        }
-                        else if(bing_arr[0][i]== 79)
-                        {
-                            bing_value = rand() % (75-61+1)+61;
-                        }
-                        goto LABEL1;
                     }
                 }
             }
+            while(m>0);
             bing_arr[j+1][i] = bing_value;
         }
     }
-
-    /*for(i=0;i<5;i++)  /*This rechecks the bingo array for any same values and if found send back to previous
-                        loop to renew all values.*/
-    /*{
-        for(j=0;j<5;j++)
-        {
-            for(k=0;k<5;k++)
-            {
-                for(l=0;l<5;l++)
-                {
-                    if(bing_arr[j+1][i]== bing_arr[l+1][k] && j+1!=l+1 && i!=k)
-                    {
-                        goto Label3;
-                    }
-                }
-            }
-        }
-    }*/
-
     bing_arr[3][2]=0; /*free space on bingo card*/
 }
 
@@ -252,20 +236,24 @@ void Bingo_card(int bing_arr[][6])
 int number_caller()
 {
     static int i=0;
-    int j=0;
+    int j=0,k=0;
     static int call_num_arr[100]={};
     int call_value=0;
     srand(time(0));
 
-    call_value = rand() % (75-1+1)+1;
-    for(j=0;j<75;j++)
+    do
     {
-        LABEL2: if (call_num_arr[j]==call_value)
+        k=0; /*this resets the value of k at each new loop.*/
+        call_value = rand() % (75-1+1)+1;
+        for(j=0;j<75;j++)
         {
-            call_value = rand() % (75-1+1)+1;
-            goto LABEL2;
+            if(call_num_arr[j]==call_value)
+            {
+                k++;
+            }
         }
     }
+    while(k>0);
     if(i==75)
     {
         printf("All numbers between 1 and 75 have been called.\n");
@@ -301,12 +289,12 @@ int num_Bingocard_checker(int bing_arr[][6],int random_num)
     }
 }
 
-
 int row_check(int bing_arr[][6])
 {
-    int i=0, j=0, count=0;
-    for(i=1;i<=5;i++)
+    int i=1, j=0, count=0;
+    do
     {
+        count=0;
         for(j=0;j<5;j++)
         {
             if(bing_arr[i][j]==0 || bing_arr[i][j]==88)
@@ -314,12 +302,9 @@ int row_check(int bing_arr[][6])
                 count++;
             }
         }
-        if(count==5)
-        {
-            break;
-        }
-        count=0; /*this resets the counter back to zero before checking a new row.*/
+        i++;
     }
+    while(count!=5 && i<=5);
     if(count==5)
     {
         return 1;
@@ -330,12 +315,12 @@ int row_check(int bing_arr[][6])
     }
 }
 
-
 int column_check(int bing_arr[][6])
 {
     int i=0, j=0, count=0;
-    for(i=0;i<5;i++)
+    do
     {
+        count=0;
         for(j=1;j<=5;j++)
         {
             if(bing_arr[j][i]==0 || bing_arr[j][i]==88)
@@ -343,12 +328,10 @@ int column_check(int bing_arr[][6])
                 count++;
             }
         }
-        if(count==5)
-        {
-            break;
-        }
-        count=0; /*this resets the counter back to zero before checking a new column.*/
+        i++;
     }
+    while(count!=5 && i<5);
+
     if(count==5)
     {
         return 1;
